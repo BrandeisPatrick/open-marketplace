@@ -118,7 +118,8 @@ setInterval(() => {
   else if (kind === 1) emit({ type: 'agent.tool_call', tool: 'search_products', actor: BUYER, source: 'mcp', ok: true, summary: `Ada searched for "${p.tags[0]}" (${search(p.tags[0]).total} results)` });
   else emit({ type: 'product.updated', product: summary(p), actor: p.seller, source: 'api' });
 }, 4000).unref();
-setInterval(() => { for (const res of clients) res.write(': ping\n\n'); }, 10_000).unref();
+// Heartbeat: the web client reopens a stream that stays silent for 40s, like it does with the real server.
+setInterval(() => { for (const res of clients) res.write('event: ping\ndata: {}\n\n'); }, 15_000).unref();
 
 // ── Scripted chat turns: { say?, tool?, input?, run?() → { ok, result, summary }, after?(result) } ──
 function plan(role, text) {

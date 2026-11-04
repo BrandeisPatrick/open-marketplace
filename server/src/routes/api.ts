@@ -6,7 +6,8 @@ import * as store from '../marketplace/store.js';
 import { ORDER_STATUSES, PRODUCT_STATUSES, SORT_KEYS, ToolError, type MarketplaceEvent, type ProductStatus, type SortKey } from '../marketplace/types.js';
 import { chatRoutes, SSE_HEADERS } from './chat.js';
 
-const PING_MS = 25_000;
+/** Heartbeat interval. The web client reopens a stream that stays silent for a few of these (see web/src/api.ts). */
+const PING_MS = 15_000;
 const LOCAL_HOST = /^(?:localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/i;
 
 function query(req: Request, name: string): string | undefined {
@@ -112,7 +113,7 @@ export function apiRouter(): Router {
     res.json({ stats: store.sellerStats(store.demoActor('seller').id) });
   });
 
-  // Live domain events: `event: <type>` + `data: <json>`, a comment ping every 25s.
+  // Live domain events: `event: <type>` + `data: <json>`, plus a `ping` event every PING_MS as a liveness signal.
   r.get('/events', (req, res) => {
     res.writeHead(200, SSE_HEADERS);
     res.flushHeaders();
@@ -122,7 +123,7 @@ export function apiRouter(): Router {
     };
     const unsubscribe = events.subscribe(send);
     const ping = setInterval(() => {
-      if (!res.writableEnded) res.write(': ping\n\n');
+      if (!res.writableEnded) res.write('event: ping\ndata: {}\n\n');
     }, PING_MS);
     let closed = false;
     const cleanup = () => {

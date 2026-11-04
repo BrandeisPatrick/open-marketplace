@@ -154,7 +154,7 @@ sources) with a one-line human summary, e.g. `Ada searched for "mechanical keybo
 | `GET /api/seller/listings` | `{ products: ProductDetail[] }` (demo seller) |
 | `GET /api/seller/orders` | `{ orders: Order[] }` |
 | `GET /api/seller/stats` | `{ stats: SellerStats }` |
-| `GET /api/events` | SSE: `event: <type>\ndata: <MarketplaceEvent JSON>\n\n`, plus `: ping` comment every 25s |
+| `GET /api/events` | SSE: `event: <type>\ndata: <MarketplaceEvent JSON>\n\n`, plus `event: ping` / `data: {}` every 15s as a liveness signal; the web client reopens a stream that stays silent for 40s (a dev proxy can keep the browser's connection open after the API server restarted) |
 | `GET /api/conversations/:role` | `{ id: string; role; actor: Actor; items: TranscriptItem[] }` (role = `buyer`\|`seller`, one conversation per demo actor; a history written in the other assistant mode, offline helper vs Claude, is discarded, so switching modes starts fresh) |
 | `DELETE /api/conversations/:role` | `{ ok: true }` — clears history |
 | `POST /api/chat` body `{ role: 'buyer'\|'seller'; message: string }` | **SSE stream** (see §7) |

@@ -175,9 +175,15 @@ export const MARKETPLACE_EVENT_TYPES: readonly MarketplaceEventType[] = [
   'agent.tool_call',
 ];
 
+/** The server sends `event: ping` every 15s; a stream silent for longer than this is reopened. */
+const STALE_MS = 40_000;
+const WATCHDOG_MS = 5_000;
+
 /**
- * Subscribes to `/api/events`. Reconnects with backoff if the browser gives up
- * (e.g. the server was down when we connected). Returns an unsubscribe function.
+ * Subscribes to `/api/events`. Reconnects with backoff if the browser gives up (e.g. the server was down when we
+ * connected), and reopens a stream that has gone silent: a dev proxy can keep the browser's connection open after
+ * the API server behind it restarted, so the browser never sees an error and would otherwise wait forever. The
+ * server's `ping` events make silence measurable. Returns an unsubscribe function.
  */
 export function subscribeEvents(
   onEvent: (event: MarketplaceEvent) => void,
@@ -187,8 +193,10 @@ export function subscribeEvents(
   let retry: number | undefined;
   let attempt = 0;
   let stopped = false;
+  let lastSeen = Date.now();
 
   const handle = (msg: MessageEvent<string>) => {
+    lastSeen = Date.now();
     try {
       const evt = JSON.parse(msg.data) as MarketplaceEvent;
       if (evt && typeof evt.type === 'string') onEvent(evt);
@@ -196,32 +204,50 @@ export function subscribeEvents(
       /* ignore malformed payloads */
     }
   };
+  const heartbeat = () => {
+    lastSeen = Date.now();
+  };
+
+  const closeSource = (es: EventSource) => {
+    for (const type of MARKETPLACE_EVENT_TYPES) es.removeEventListener(type, handle);
+    es.removeEventListener('ping', heartbeat);
+    es.close();
+    if (source === es) source = null;
+  };
 
   const connect = () => {
     const es = new EventSource('/api/events');
     source = es;
+    lastSeen = Date.now();
     for (const type of MARKETPLACE_EVENT_TYPES) es.addEventListener(type, handle);
+    es.addEventListener('ping', heartbeat);
     es.onmessage = handle; // events sent without an `event:` field
     es.onopen = () => {
       attempt = 0;
+      lastSeen = Date.now();
       onStatus?.(true);
     };
     es.onerror = () => {
       onStatus?.(false);
       if (es.readyState === EventSource.CLOSED && !stopped) {
-        es.close();
+        closeSource(es);
         retry = window.setTimeout(connect, Math.min(30_000, 1_000 * 2 ** attempt++));
       }
     };
   };
 
+  const watchdog = window.setInterval(() => {
+    if (stopped || !source || source.readyState !== EventSource.OPEN || Date.now() - lastSeen < STALE_MS) return;
+    closeSource(source);
+    onStatus?.(false);
+    connect();
+  }, WATCHDOG_MS);
+
   connect();
   return () => {
     stopped = true;
     window.clearTimeout(retry);
-    if (source) {
-      for (const type of MARKETPLACE_EVENT_TYPES) source.removeEventListener(type, handle);
-      source.close();
-    }
+    window.clearInterval(watchdog);
+    if (source) closeSource(source);
   };
 }
