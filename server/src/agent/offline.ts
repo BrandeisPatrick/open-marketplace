@@ -102,7 +102,7 @@ interface TurnContext {
 }
 
 export async function runOfflineTurn({ actor, message, emit }: OfflineTurnOptions): Promise<void> {
-  const conversation = getOrCreateConversation(actor);
+  const conversation = getOrCreateConversation(actor, 'offline');
   const history = conversation.messages;
   const rec = new TurnRecorder(actor, emit);
   if (!history.some((m) => m.role === 'assistant')) rec.say(OFFLINE_NOTICE);

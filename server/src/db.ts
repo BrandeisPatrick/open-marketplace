@@ -71,6 +71,7 @@ CREATE TABLE IF NOT EXISTS conversations (
   role                TEXT NOT NULL CHECK (role IN ('buyer', 'seller')),
   messages            TEXT NOT NULL DEFAULT '[]',
   prompt_fingerprint  TEXT,
+  mode                TEXT CHECK (mode IN ('claude', 'offline')),
   created_at          TEXT NOT NULL,
   updated_at          TEXT NOT NULL
 );
@@ -94,9 +95,10 @@ export function openDatabase(file: string = config.dbPath): DatabaseSync {
 /** Additive migrations for databases created by earlier versions of this schema. */
 function migrate(db: DatabaseSync): void {
   const cols = db.prepare('PRAGMA table_info(conversations)').all() as { name: string }[];
-  if (!cols.some((c) => c.name === 'prompt_fingerprint')) {
-    db.exec('ALTER TABLE conversations ADD COLUMN prompt_fingerprint TEXT');
-  }
+  const has = (name: string) => cols.some((c) => c.name === name);
+  if (!has('prompt_fingerprint')) db.exec('ALTER TABLE conversations ADD COLUMN prompt_fingerprint TEXT');
+  // Rows from before this column have no known mode; getOrCreateConversation discards them on first access.
+  if (!has('mode')) db.exec('ALTER TABLE conversations ADD COLUMN mode TEXT');
 }
 
 export function getDb(): DatabaseSync {

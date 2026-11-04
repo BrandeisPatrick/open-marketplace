@@ -205,7 +205,7 @@ async function runClaudeTurn(actor: Actor, opts: ChatTurnOptions, deps: ChatTurn
   const tools = anthropicToolDefs(actor);
   const fingerprint = promptFingerprint(model, system, tools);
 
-  const conversation = getOrCreateConversation(actor);
+  const conversation = getOrCreateConversation(actor, 'claude');
   let messages = repairHistory(conversation.messages);
   if (conversation.fingerprint !== fingerprint) messages = stripThinking(messages);
   messages.push({ role: 'user', content: opts.message });

@@ -8,6 +8,7 @@ import {
   ORDER_STATUSES,
   ToolError,
   type Actor,
+  type ConversationMode,
   type Cart,
   type Category,
   type Order,
@@ -79,6 +80,7 @@ interface ConversationRow {
   role: Role;
   messages: string;
   prompt_fingerprint: string | null;
+  mode: ConversationMode | null;
   created_at: string;
   updated_at: string;
 }
@@ -686,6 +688,8 @@ export interface ConversationRecord {
   messages: Anthropic.MessageParam[];
   /** Hash of model + system prompt + tools the stored thinking blocks were produced under (null: none yet). */
   fingerprint: string | null;
+  /** Which assistant wrote the stored turns (null: a row from before modes were recorded). */
+  mode: ConversationMode | null;
   created_at: string;
   updated_at: string;
 }
@@ -699,17 +703,25 @@ function parseMessages(raw: string): Anthropic.MessageParam[] {
   }
 }
 
-/** One conversation per (actor, role); created on first access. */
-export function getOrCreateConversation(actor: Actor): ConversationRecord {
+/**
+ * One conversation per (actor, role); created on first access. With `mode`, a stored conversation the other
+ * assistant wrote is discarded first: the offline helper's replies replayed to Claude read as its own earlier
+ * words (and vice versa), so switching modes starts the history over.
+ */
+export function getOrCreateConversation(actor: Actor, mode?: ConversationMode): ConversationRecord {
   let row = get<ConversationRow>(
     'SELECT * FROM conversations WHERE actor_id = ? AND role = ? ORDER BY created_at DESC LIMIT 1', actor.id, actor.role,
   );
+  if (row && mode && row.mode !== mode) {
+    run('DELETE FROM conversations WHERE actor_id = ? AND role = ?', actor.id, actor.role);
+    row = undefined;
+  }
   if (!row) {
     const now = nowIso();
     const id = newId('conv');
     run(
-      "INSERT INTO conversations (id, actor_id, role, messages, prompt_fingerprint, created_at, updated_at) VALUES (?, ?, ?, '[]', NULL, ?, ?)",
-      id, actor.id, actor.role, now, now,
+      "INSERT INTO conversations (id, actor_id, role, messages, prompt_fingerprint, mode, created_at, updated_at) VALUES (?, ?, ?, '[]', NULL, ?, ?, ?)",
+      id, actor.id, actor.role, mode ?? null, now, now,
     );
     row = get<ConversationRow>('SELECT * FROM conversations WHERE id = ?', id)!;
   }
@@ -719,6 +731,7 @@ export function getOrCreateConversation(actor: Actor): ConversationRecord {
     role: row.role,
     messages: parseMessages(row.messages),
     fingerprint: row.prompt_fingerprint,
+    mode: row.mode,
     created_at: row.created_at,
     updated_at: row.updated_at,
   };

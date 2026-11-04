@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { z } from 'zod';
 import { isTurnActive, runChatTurn } from '../agent/chat.js';
 import { toTranscript } from '../agent/transcript.js';
+import { aiEnabled } from '../config.js';
 import * as store from '../marketplace/store.js';
 import type { ChatEvent, Role } from '../marketplace/types.js';
 
@@ -33,7 +34,8 @@ export function chatRoutes(): Router {
       return;
     }
     const actor = store.demoActor(role);
-    const conversation = store.getOrCreateConversation(actor);
+    // The history the next turn builds on: one written by the other assistant mode starts over.
+    const conversation = store.getOrCreateConversation(actor, aiEnabled() ? 'claude' : 'offline');
     res.json({ id: conversation.id, role, actor, items: toTranscript(conversation.messages) });
   });
 

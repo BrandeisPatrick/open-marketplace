@@ -1,4 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+import { config } from '../src/config.js';
 import { events } from '../src/events.js';
 import { executeTool } from '../src/marketplace/tools.js';
 import type { ChatEvent, MarketplaceEvent } from '../src/marketplace/types.js';
@@ -84,6 +85,25 @@ describe('REST API', () => {
     expect(fresh.body.items).toEqual([]);
     expect(fresh.body.id).not.toBe(conv.body.id);
     expect((await get('/api/conversations/admin')).status).toBe(400);
+  });
+
+  it('starts a fresh conversation when the assistant mode changed since it was stored', async () => {
+    const res = await fetch(`${app.url}/api/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ role: 'seller', message: 'how are sales?' }),
+    });
+    await res.text();
+    const before = await get('/api/conversations/seller');
+    expect(before.body.items.length).toBeGreaterThan(0);
+    config.anthropicApiKey = 'sk-test'; // as if the key were added and the server restarted
+    try {
+      const after = await get('/api/conversations/seller');
+      expect(after.body.items).toEqual([]);
+      expect(after.body.id).not.toBe(before.body.id);
+    } finally {
+      config.anthropicApiKey = undefined;
+    }
   });
 
   it('GET /api/events streams typed domain events and cleans up on disconnect', async () => {

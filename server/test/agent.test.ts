@@ -224,8 +224,19 @@ describe('Claude tool-use loop (mock Messages API)', () => {
     expect((replayed[1]!.content as { type: string }[])[0]).toMatchObject({ type: 'thinking', signature: 'sig-x' });
   });
 
-  it('strips stored thinking blocks when the prompt fingerprint changed', async () => {
+  it('starts over when the stored conversation was written by the offline helper', async () => {
+    await turn('buyer', 'find coffee'); // no client and no key: the offline helper answers and persists its turn
+    expect(store.getOrCreateConversation(buyer()).mode).toBe('offline');
+    const deps = await withMock([{ kind: 'stream', stop_reason: 'end_turn', blocks: [{ type: 'text', text: 'Hi' }] }]);
+    await turn('buyer', 'new question', deps);
+    expect(mock!.requests[0]!.body.messages).toEqual([{ role: 'user', content: 'new question' }]);
     const conv = store.getOrCreateConversation(buyer());
+    expect(conv.mode).toBe('claude');
+    expect(toTranscript(conv.messages).map((i) => i.kind)).toEqual(['user', 'assistant_text']);
+  });
+
+  it('strips stored thinking blocks when the prompt fingerprint changed', async () => {
+    const conv = store.getOrCreateConversation(buyer(), 'claude');
     store.saveConversation(
       conv.id,
       [

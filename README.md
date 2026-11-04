@@ -14,7 +14,7 @@ npm run dev               # API + MCP on http://localhost:3001, UI on http://loc
 
 Open **http://localhost:5173** (if that port is busy, Vite picks the next free one and prints it).
 
-**No API key? It still runs.** Without `ANTHROPIC_API_KEY` the UI, REST API and MCP server work normally and the chat falls back to an offline keyword helper ("find a mechanical keyboard", "gifts under $50", "add the first one", "show my cart", "checkout"; for sellers "orders to ship", "how are sales?", "mark ord_… shipped"). The UI shows an offline banner, and the first reply explains how to turn the assistant on.
+**No API key? It still runs.** Without `ANTHROPIC_API_KEY` the UI, REST API and MCP server work normally and the chat falls back to an offline keyword helper ("find a mechanical keyboard", "gifts under $50", "add the first one", "show my cart", "checkout"; for sellers "orders to ship", "how are sales?", "mark ord_… shipped"). The UI shows an offline banner, and the first reply explains how to turn the assistant on. Conversations belong to the mode that wrote them: add or remove the key and restart, and both windows start with a fresh history, so the offline helper's replies are never replayed to Claude as its own words.
 
 The database is a single SQLite file (`data/marketplace.db`) seeded on first run with three demo actors, 33 products and some order history. Delete the file to start fresh.
 

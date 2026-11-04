@@ -38,7 +38,9 @@ cart_items(buyer_id, product_id, quantity, PK(buyer_id, product_id))
 orders(id PK, buyer_id, seller_id, status 'placed'|'shipped'|'delivered'|'cancelled',
        subtotal_cents, shipping_cents, total_cents, shipping_address, created_at, updated_at)
 order_items(order_id, product_id, title, emoji, unit_price_cents, quantity)
-conversations(id PK, actor_id, role, messages JSON-text (Anthropic MessageParam[]), created_at, updated_at)
+conversations(id PK, actor_id, role, messages JSON-text (Anthropic MessageParam[]), prompt_fingerprint,
+              mode 'claude'|'offline' (which assistant wrote it; a history from the other mode is discarded on first access),
+              created_at, updated_at)
 ```
 
 IDs: `usr_…`, `prod_…`, `ord_…`, `conv_…` (short random suffix, e.g. 8 base36 chars).
@@ -153,7 +155,7 @@ sources) with a one-line human summary, e.g. `Ada searched for "mechanical keybo
 | `GET /api/seller/orders` | `{ orders: Order[] }` |
 | `GET /api/seller/stats` | `{ stats: SellerStats }` |
 | `GET /api/events` | SSE: `event: <type>\ndata: <MarketplaceEvent JSON>\n\n`, plus `: ping` comment every 25s |
-| `GET /api/conversations/:role` | `{ id: string; role; actor: Actor; items: TranscriptItem[] }` (role = `buyer`\|`seller`, one conversation per demo actor) |
+| `GET /api/conversations/:role` | `{ id: string; role; actor: Actor; items: TranscriptItem[] }` (role = `buyer`\|`seller`, one conversation per demo actor; a history written in the other assistant mode, offline helper vs Claude, is discarded, so switching modes starts fresh) |
 | `DELETE /api/conversations/:role` | `{ ok: true }` — clears history |
 | `POST /api/chat` body `{ role: 'buyer'\|'seller'; message: string }` | **SSE stream** (see §7) |
 

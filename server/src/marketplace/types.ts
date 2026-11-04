@@ -14,6 +14,9 @@ export type SortKey = (typeof SORT_KEYS)[number];
 
 export type Role = 'buyer' | 'seller';
 
+/** Which assistant wrote a stored conversation: the Claude agent or the offline keyword helper. */
+export type ConversationMode = 'claude' | 'offline';
+
 export interface Actor {
   id: string;
   name: string;
