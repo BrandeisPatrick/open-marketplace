@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Open Marketplace logo">
+  <defs>
+    <linearGradient id="om-gradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f46e5"/>
+      <stop offset="0.5" stop-color="#7c3aed"/>
+      <stop offset="1" stop-color="#f59e0b"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="120" height="120" rx="30" fill="url(#om-gradient)"/>
+  <g fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M42 34h44a8 8 0 0 1 7.9 6.9l6 44A8 8 0 0 1 92 94H36a8 8 0 0 1-7.9-9.1l6-44A8 8 0 0 1 42 34z"/>
+    <path d="M50 48a14 11 0 0 0 28 0"/>
+  </g>
+  <path fill="#fff" d="M64 66.5l2.6 6.4 6.4 2.6-6.4 2.6-2.6 6.4-2.6-6.4-6.4-2.6 6.4-2.6z"/>
+</svg>
