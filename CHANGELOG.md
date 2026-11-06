@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- The web UI moved to a monotone, liquid-glass look: a neutral palette with no hues, frosted glass surfaces with specular highlights over a slowly drifting backdrop, and tonal status badges. Behavior is unchanged.
+- The logo is now a dark glass mark; the favicon, README screenshots, badges and social preview image follow it.
 - The README is shorter and feature-led, with a logo header and a documentation table, following the style of other open-source commerce projects.
 - Reference material moved from the README into guides under `docs/`: getting started, MCP, tools, architecture, and configuration and scripts, indexed in `docs/README.md`.
 - Contributions now use Conventional Commits for commit messages and pull request titles.
