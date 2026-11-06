@@ -4,6 +4,20 @@ All notable changes to this project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- The README is shorter and feature-led, with a logo header and a documentation table, following the style of other open-source commerce projects.
+- Reference material moved from the README into guides under `docs/`: getting started, MCP, tools, architecture, and configuration and scripts, indexed in `docs/README.md`.
+- Contributions now use Conventional Commits for commit messages and pull request titles.
+
+### Added
+
+- A logo, used in the README and as the web UI favicon, and a social preview image, in `.github/assets/`.
+- `AGENTS.md`, a guide for AI coding agents working in the repository, imported by `CLAUDE.md`.
+- `CODEOWNERS`, which requests review from the maintainer on every pull request.
+
 ## [0.1.0] - 2026-11-05
 
 First public release.
@@ -24,4 +38,5 @@ First public release.
 - Server test suite (vitest) covering the tools, REST API, MCP server, offline helper and the Claude tool-use loop against a mock Messages API.
 - Project documentation: README, shared contract (`docs/CONTRACT.md`), contributing guide, code of conduct, security policy, issue forms, pull request template and CI on Node 22, 24 and 26.
 
+[Unreleased]: https://github.com/BrandeisPatrick/open-marketplace/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/BrandeisPatrick/open-marketplace/releases/tag/v0.1.0
