@@ -7,7 +7,7 @@ import { ORDER_STATUSES, StatusPill } from './OrderCard';
 
 export function StatTile({ label, value, hint }: { label: string; value: ReactNode; hint?: ReactNode }) {
   return (
-    <div className="min-w-0 rounded-xl bg-sunken px-3 py-2.5 ring-1 ring-line ring-inset">
+    <div className="glass-tile min-w-0 rounded-xl px-3 py-2.5">
       <div className="truncate text-[11px] font-medium tracking-wide text-stone-500 uppercase dark:text-stone-400">{label}</div>
       <div className="mt-0.5 truncate text-lg leading-tight font-semibold tabular-nums text-stone-900 dark:text-stone-50">{value}</div>
       {hint && <div className="truncate text-[11px] text-stone-500 dark:text-stone-400">{hint}</div>}
@@ -63,9 +63,9 @@ export function StatsCard({ stats, onShip, busy }: Props) {
                       <span className="shrink-0 text-sm font-medium tabular-nums">{t.revenue}</span>
                     </div>
                     <div className="mt-1 flex items-center gap-2">
-                      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-stone-100 dark:bg-stone-800">
+                      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-stone-900/[0.07] dark:bg-white/10">
                         <div
-                          className="h-full rounded-full bg-accent"
+                          className="h-full rounded-full bg-linear-to-r from-accent/60 to-accent"
                           style={{ width: `${Math.max(4, Math.round(((t.revenue_cents || 0) / maxRevenue) * 100))}%` }}
                         />
                       </div>
@@ -90,8 +90,8 @@ export function StatsCard({ stats, onShip, busy }: Props) {
                   <span
                     className={
                       p.stock <= 0
-                        ? 'shrink-0 text-xs font-medium text-red-600 dark:text-red-400'
-                        : 'shrink-0 text-xs font-medium text-amber-700 dark:text-amber-300'
+                        ? 'shrink-0 rounded-full bg-stone-900 px-1.5 text-[11px] font-semibold text-white dark:bg-stone-50 dark:text-stone-950'
+                        : 'shrink-0 text-xs font-medium text-stone-700 dark:text-stone-200'
                     }
                   >
                     {p.stock <= 0 ? 'Sold out' : `${p.stock} left`}
@@ -119,7 +119,7 @@ export function StatsCard({ stats, onShip, busy }: Props) {
                       type="button"
                       onClick={() => onShip(o)}
                       disabled={busy}
-                      className="inline-flex items-center gap-1 rounded-full border border-line px-2 py-0.5 text-xs font-medium text-accent-text transition hover:border-accent disabled:cursor-not-allowed disabled:opacity-40"
+                      className="glass-pill inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium text-accent-text transition hover:border-accent/50 disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       <Truck className="size-3" aria-hidden />
                       Ship

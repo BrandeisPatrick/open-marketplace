@@ -19,12 +19,12 @@ export function ProductDetail({ product: p, badge, onAdd, busy }: Props) {
   return (
     <Card className="@container overflow-hidden">
       <div className="flex flex-col @md:flex-row">
-        <div className="relative grid shrink-0 place-items-center bg-linear-to-br from-stone-100 to-stone-50 py-7 @md:w-40 @md:py-0 dark:from-stone-800 dark:to-stone-800/30">
-          <span className="text-6xl leading-none" aria-hidden>
+        <div className="relative grid shrink-0 place-items-center bg-linear-to-br from-white/80 to-stone-200/50 py-7 @md:w-40 @md:py-0 dark:from-white/10 dark:to-white/[0.02]">
+          <span className="emoji-mono text-6xl leading-none" aria-hidden>
             {p.emoji || '📦'}
           </span>
           {badge && (
-            <span className="absolute top-3 left-3 inline-flex items-center gap-1 rounded-full bg-accent px-2 py-0.5 text-[11px] font-semibold text-accent-fg shadow-sm">
+            <span className="ink-glass absolute top-3 left-3 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold">
               {badge === 'new' ? <Sparkles className="size-3" aria-hidden /> : <PencilLine className="size-3" aria-hidden />}
               {badge === 'new' ? 'New listing' : 'Updated'}
             </span>
@@ -51,7 +51,7 @@ export function ProductDetail({ product: p, badge, onAdd, busy }: Props) {
               {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full bg-stone-100 px-2 py-0.5 text-[11px] text-stone-600 dark:bg-stone-800 dark:text-stone-300"
+                  className="glass-tile rounded-full px-2 py-0.5 text-[11px] text-stone-600 dark:text-stone-300"
                 >
                   #{tag}
                 </span>
@@ -68,7 +68,7 @@ export function ProductDetail({ product: p, badge, onAdd, busy }: Props) {
                 type="button"
                 onClick={() => onAdd(p)}
                 disabled={busy || unavailable}
-                className="inline-flex items-center gap-1 rounded-full bg-accent px-3 py-1.5 text-sm font-medium text-accent-fg shadow-sm transition hover:bg-accent-strong disabled:cursor-not-allowed disabled:opacity-40"
+                className="btn-ink inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <Plus className="size-4" aria-hidden />
                 Add to cart

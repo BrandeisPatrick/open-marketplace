@@ -4,11 +4,12 @@ import { memo, useState } from 'react';
 import { isDict } from '../lib/guards';
 import { toolLabel, type ToolState } from '../lib/toolLabels';
 
+/** pending = glass + accent text, done = glass, error = ink fill, stopped = dashed and dimmed. */
 const STYLES: Record<ToolState, string> = {
-  pending: 'border-accent/25 bg-accent-soft text-accent-text',
-  done: 'border-line bg-surface text-stone-600 dark:text-stone-300',
-  error: 'border-red-200 bg-red-50 text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300',
-  stopped: 'border-line bg-surface text-stone-400',
+  pending: 'glass-pill text-accent-text',
+  done: 'glass-pill text-stone-600 dark:text-stone-300',
+  error: 'border border-stone-900 bg-stone-900 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.2)] dark:border-stone-50 dark:bg-stone-50 dark:text-stone-950',
+  stopped: 'border border-dashed border-stone-300 bg-transparent text-stone-400 dark:border-stone-600',
 };
 
 function StateIcon({ state }: { state: ToolState }) {
@@ -16,7 +17,7 @@ function StateIcon({ state }: { state: ToolState }) {
     case 'pending':
       return <LoaderCircle className="size-3.5 shrink-0 animate-spin" aria-hidden />;
     case 'done':
-      return <Check className="size-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" aria-hidden />;
+      return <Check className="size-3.5 shrink-0 text-stone-900 dark:text-white" aria-hidden />;
     case 'error':
       return <X className="size-3.5 shrink-0" aria-hidden />;
     case 'stopped':
@@ -43,7 +44,7 @@ export const ToolChip = memo(function ToolChip({ name, input, state, result }: P
         aria-expanded={hasInput ? open : undefined}
         title={hasInput ? `${name} — show arguments` : name}
         className={clsx(
-          'inline-flex max-w-full items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition',
+          'inline-flex max-w-full items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition',
           STYLES[state],
           hasInput ? 'hover:brightness-[0.98]' : 'cursor-default',
         )}
@@ -53,7 +54,7 @@ export const ToolChip = memo(function ToolChip({ name, input, state, result }: P
         {hasInput && <ChevronDown className={clsx('size-3 shrink-0 opacity-50 transition', open && 'rotate-180')} aria-hidden />}
       </button>
       {open && hasInput && (
-        <pre className="mt-1.5 max-h-56 w-full overflow-auto rounded-xl border border-line bg-surface p-3 font-mono text-[11.5px] leading-relaxed text-stone-600 scroll-thin dark:text-stone-300">
+        <pre className="glass mt-1.5 max-h-56 w-full overflow-auto rounded-xl p-3 font-mono text-[11.5px] leading-relaxed text-stone-600 scroll-thin dark:text-stone-300">
           <span className="text-stone-400">{name}</span>
           {' '}
           {safeJson(input)}

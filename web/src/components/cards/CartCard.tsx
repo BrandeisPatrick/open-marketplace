@@ -25,17 +25,17 @@ export function CartCard({ cart, added, onCheckout, busy }: Props) {
       {lines.length === 0 ? (
         <p className="px-4 py-5 text-center text-sm text-stone-500 dark:text-stone-400">Your cart is empty.</p>
       ) : (
-        <ul className="divide-y divide-line">
+        <ul className="divide-y divide-stone-900/[0.06] dark:divide-white/[0.06]">
           {lines.map((line) => {
             const fresh = added?.product?.id === line.product.id;
             return (
-              <li key={line.product.id} className={clsx('flex items-center gap-3 px-4 py-2.5', fresh && 'bg-accent-soft')}>
+              <li key={line.product.id} className={clsx('flex items-center gap-3 px-4 py-2.5', fresh && 'bg-stone-900/[0.04] dark:bg-white/[0.05]')}>
                 <EmojiTile emoji={line.product.emoji} />
                 <div className="min-w-0 flex-1">
                   <div className="flex min-w-0 items-center gap-2">
                     <p className="truncate text-sm font-medium">{line.product.title}</p>
                     {fresh && (
-                      <span className="shrink-0 rounded-full bg-accent px-1.5 py-px text-[10px] font-semibold tracking-wide text-accent-fg uppercase">
+                      <span className="ink-glass shrink-0 rounded-full px-1.5 py-px text-[10px] font-semibold tracking-wide uppercase">
                         Added
                       </span>
                     )}
@@ -51,7 +51,7 @@ export function CartCard({ cart, added, onCheckout, busy }: Props) {
         </ul>
       )}
       {lines.length > 0 && (
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line bg-sunken px-4 py-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-stone-900/[0.06] bg-sunken/50 px-4 py-3 dark:border-white/[0.06] dark:bg-black/10">
           <div>
             <div className="text-sm">
               <span className="text-stone-500 dark:text-stone-400">Subtotal </span>
@@ -66,7 +66,7 @@ export function CartCard({ cart, added, onCheckout, busy }: Props) {
               type="button"
               onClick={onCheckout}
               disabled={busy}
-              className="rounded-full bg-accent px-4 py-1.5 text-sm font-medium text-accent-fg shadow-sm transition hover:bg-accent-strong disabled:cursor-not-allowed disabled:opacity-40"
+              className="btn-ink rounded-full px-4 py-1.5 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-40"
             >
               Checkout
             </button>
