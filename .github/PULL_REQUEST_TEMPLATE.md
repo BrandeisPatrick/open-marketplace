@@ -14,5 +14,6 @@
 
 - [ ] `npm run typecheck`, `npm test` and `npm run build` pass locally
 - [ ] `docs/CONTRACT.md` is updated if any tool, REST, event or streaming shape changed
-- [ ] The README tools table is updated if a tool was added, removed or renamed
+- [ ] `docs/tools.md` is updated if a tool was added, removed or renamed
+- [ ] The pull request title follows the Conventional Commits format described in `CONTRIBUTING.md`
 - [ ] No secrets: no `.env` file, API keys or personal data in the diff

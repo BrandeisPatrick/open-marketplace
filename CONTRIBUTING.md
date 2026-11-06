@@ -2,6 +2,8 @@
 
 Thanks for your interest in improving Open Marketplace. This guide covers local setup, the project's conventions and what a pull request needs before it can be merged. By participating you agree to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 
+The guides in [`docs/`](docs/README.md) cover running the app, connecting over MCP, the tools, the architecture and configuration. If you work with an AI coding agent, [`AGENTS.md`](AGENTS.md) is a condensed version of this guide written for agents; `CLAUDE.md` imports it for Claude Code.
+
 ## Development setup
 
 You need Node.js 22.13 or newer and npm. An Anthropic API key is optional: without one, chat runs in offline keyword mode and everything else works the same.
@@ -20,7 +22,7 @@ Never commit `.env`, API keys or other credentials. `.env` is listed in `.gitign
 
 ## Project layout
 
-See [Project layout](README.md#project-layout) in the README for an annotated tree. The short version: `server/src/marketplace` holds the tool registry and the store, `server/src/agent` the chat assistants, `server/src/mcp` the MCP server, `server/src/routes` the Express routers, and `web/src` the React UI.
+See [Repository structure](docs/architecture.md#repository-structure) in the architecture guide for an annotated tree. The short version: `server/src/marketplace` holds the tool registry and the store, `server/src/agent` the chat assistants, `server/src/mcp` the MCP server, `server/src/routes` the Express routers, and `web/src` the React UI.
 
 ## Scripts
 
@@ -54,7 +56,7 @@ Every marketplace action is defined once in [`server/src/marketplace/tools.ts`](
    - `summarize(actor, input, output)`, a one-line activity summary such as `Ada added 1 × Stoneware Mug to the cart`.
 3. **Register it** by adding it to the `TOOLS` array. From there it is picked up automatically: `anthropicToolDefs` gives it to the chat assistants for the matching role, `createMcpServer` registers it for MCP clients with the matching token, and every call from either side runs through `executeTool`, which handles validation, scope checks and the `agent.tool_call` event. Keep the existing order stable, because the chat assistants cache the tool list.
 4. **Write tests** in `server/test`, using the helpers in `server/test/helpers.ts` (`freshDb`, `buyer`, `seller`, `captureEvents`, `startApp`). Cover the happy path, scope enforcement and the main error cases. If the tool is part of the MCP or HTTP surface you care about, add a case to `mcp.test.ts` or `http.test.ts`.
-5. **Update the docs**: the tool table in `docs/CONTRACT.md` section 4 (inputs and outputs) and the [Tools](README.md#tools) table in the README.
+5. **Update the docs**: the tool table in `docs/CONTRACT.md` section 4 (inputs and outputs) and the table for the tool's scope in [`docs/tools.md`](docs/tools.md).
 6. **Update the web UI if the result is visual.** Add pending and done chip labels in `web/src/lib/toolLabels.ts` (otherwise a generic label derived from the name is shown), and if the result should render as a card, add a case to `renderCard` in `web/src/components/Transcript.tsx` and list the mapping in `docs/CONTRACT.md` section 9. Shared types live in `web/src/types.ts`.
 7. **Consider the assistants.** If Claude needs guidance on when to use the tool, adjust the system prompts in `server/src/agent/prompts.ts`. The offline keyword helper in `server/src/agent/offline.ts` is a separate, rule-based fallback and only needs a change if the tool should be reachable without an API key.
 
@@ -90,11 +92,31 @@ CI runs the same three commands on Node 22, 24 and 26 for every push to `main` a
 
 ## Commits and pull requests
 
-- Keep pull requests small and focused on one change. Separate refactors from behavior changes.
-- Write commit subjects in the imperative mood, in sentence case, without a trailing period, describing the effect of the change. Examples from the history: "Reopen the live-events stream when it goes silent" and "Start conversations fresh when the assistant mode changes".
+Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/):
+
+```
+type(scope): subject
+```
+
+- **Type** is one of `feat` (a new feature), `fix` (a bug fix), `docs` (documentation only), `refactor` (a code change that neither fixes a bug nor adds a feature), `test` (adding or fixing tests), `chore` (maintenance that changes no shipped behavior), `ci` (the CI workflow) or `build` (the build setup, scripts or dependencies).
+- **Scope** is optional and names the area: `server`, `web`, `mcp` or `docs`.
+- **Subject** is in the imperative mood, lower case, without a trailing period, and describes the effect of the change.
+
+Examples:
+
+```
+feat(server): add a wishlist tool for buyers
+fix(web): reopen the live-events stream when it goes silent
+docs(mcp): document the X-Marketplace-Token header
+```
+
+The first commits in the history predate this convention and use plain sentence-case subjects.
+
 - Use the commit body to explain why, when the subject alone does not.
+- Pull request titles follow the same `type(scope): subject` format.
+- Keep pull requests small and focused on one change. Separate refactors from behavior changes.
 - Fill in the pull request template: a summary, what changed, how you tested it and the checklist.
-- Update `docs/CONTRACT.md` and the README in the same pull request when your change affects them.
+- Update `docs/CONTRACT.md` and the affected guides in `docs/` (for tools, `docs/tools.md`) in the same pull request when your change affects them.
 - Do not add dependencies without discussing it in an issue first.
 
 ## Reporting bugs and proposing features
