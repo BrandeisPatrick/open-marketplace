@@ -38,7 +38,7 @@ export function BuyerPanel({ refreshKey, onSend, busy, onClose }: PanelProps) {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-3 flex items-center justify-between border-t border-line pt-3 text-sm">
+                <div className="mt-3 flex items-center justify-between border-t border-stone-900/[0.06] pt-3 text-sm dark:border-white/[0.06]">
                   <span className="text-stone-500 dark:text-stone-400">Subtotal</span>
                   <span className="font-semibold tabular-nums">{data.cart.subtotal}</span>
                 </div>
@@ -47,7 +47,7 @@ export function BuyerPanel({ refreshKey, onSend, busy, onClose }: PanelProps) {
                     type="button"
                     disabled={busy}
                     onClick={() => onSend('Check out my cart')}
-                    className="mt-3 w-full rounded-xl bg-accent py-2 text-sm font-medium text-accent-fg shadow-sm transition hover:bg-accent-strong disabled:cursor-not-allowed disabled:opacity-40"
+                    className="btn-ink mt-3 w-full rounded-xl py-2 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     Checkout
                   </button>

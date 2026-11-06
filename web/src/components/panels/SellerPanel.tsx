@@ -6,9 +6,9 @@ import { EmojiTile, MoreToggle } from '../cards/Card';
 import { MiniStat, OrderRow, PanelError, PanelHeader, PanelSection, PanelSkeleton, type PanelProps } from './PanelParts';
 
 const LISTING_STATUS_DOT = {
-  active: 'bg-emerald-500',
+  active: 'bg-stone-900 dark:bg-stone-50',
   draft: 'bg-stone-400',
-  archived: 'bg-stone-300 dark:bg-stone-600',
+  archived: 'bg-transparent ring-1 ring-stone-400 ring-inset',
 } as const;
 
 /** Seller side panel: stats tiles, orders needing shipping, listings. */
@@ -56,7 +56,7 @@ export function SellerPanel({ refreshKey, onSend, busy, onClose }: PanelProps) {
                       type="button"
                       disabled={busy}
                       onClick={() => onSend(`Mark order ${order.id} as shipped`)}
-                      className="inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium text-accent-fg shadow-sm transition hover:bg-accent-strong disabled:cursor-not-allowed disabled:opacity-40"
+                      className="btn-ink inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       <Truck className="size-3" aria-hidden />
                       Mark shipped
@@ -73,7 +73,7 @@ export function SellerPanel({ refreshKey, onSend, busy, onClose }: PanelProps) {
           <p className="text-sm text-stone-500 dark:text-stone-400">No listings yet — ask the assistant to create one.</p>
         ) : (
           <div className="flex flex-col gap-2">
-            <ul className="divide-y divide-line">
+            <ul className="divide-y divide-stone-900/[0.06] dark:divide-white/[0.06]">
               {shown.map((p) => (
                 <li key={p.id} className="flex items-center gap-2.5 py-2 first:pt-0">
                   <EmojiTile emoji={p.emoji} size="sm" />
@@ -85,8 +85,8 @@ export function SellerPanel({ refreshKey, onSend, busy, onClose }: PanelProps) {
                       {p.price} ·{' '}
                       <span
                         className={clsx(
-                          p.stock <= 0 && 'font-medium text-red-600 dark:text-red-400',
-                          p.stock > 0 && p.stock <= 5 && 'font-medium text-amber-700 dark:text-amber-300',
+                          p.stock <= 0 && 'font-semibold text-stone-950 underline decoration-dashed underline-offset-2 dark:text-white',
+                          p.stock > 0 && p.stock <= 5 && 'font-semibold text-stone-800 dark:text-stone-100',
                         )}
                       >
                         {p.stock <= 0 ? 'out of stock' : `${p.stock} in stock`}

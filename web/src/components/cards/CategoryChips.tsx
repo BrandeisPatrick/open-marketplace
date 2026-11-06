@@ -18,15 +18,15 @@ type Props = { categories: Category[]; onPick?: (name: string) => void; busy?: b
 /** Category chips for `list_categories`; clicking one (buyer) asks for that category. */
 export function CategoryChips({ categories, onPick, busy }: Props) {
   if (categories.length === 0) return <EmptyNote>No categories yet.</EmptyNote>;
-  const chip = 'inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1.5 text-sm shadow-sm';
+  const chip = 'glass-pill inline-flex items-center gap-1.5 px-3 py-1.5 text-sm';
   return (
     <div className="flex flex-wrap gap-1.5">
       {categories.map((c) => {
         const body = (
           <>
-            <span aria-hidden>{CATEGORY_EMOJI[c.name.toLowerCase()] ?? '🏷️'}</span>
+            <span className="emoji-mono" aria-hidden>{CATEGORY_EMOJI[c.name.toLowerCase()] ?? '🏷️'}</span>
             <span className="capitalize">{c.name}</span>
-            <span className="rounded-full bg-stone-100 px-1.5 text-[11px] text-stone-500 tabular-nums dark:bg-stone-800 dark:text-stone-400">
+            <span className="rounded-full bg-stone-900/[0.06] px-1.5 text-[11px] text-stone-600 tabular-nums dark:bg-white/10 dark:text-stone-300">
               {c.count}
             </span>
           </>
@@ -37,7 +37,7 @@ export function CategoryChips({ categories, onPick, busy }: Props) {
             type="button"
             disabled={busy}
             onClick={() => onPick(c.name)}
-            className={clsx(chip, 'transition hover:border-accent hover:text-accent-text disabled:cursor-not-allowed disabled:opacity-50')}
+            className={clsx(chip, 'transition hover:border-accent/40 hover:text-stone-950 dark:hover:text-white disabled:cursor-not-allowed disabled:opacity-50')}
           >
             {body}
           </button>

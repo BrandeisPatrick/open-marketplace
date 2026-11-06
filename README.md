@@ -22,11 +22,11 @@
 
 <p align="center">
   <a href="https://github.com/BrandeisPatrick/open-marketplace/actions/workflows/ci.yml"><img src="https://github.com/BrandeisPatrick/open-marketplace/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <a href="https://github.com/BrandeisPatrick/open-marketplace/releases/latest"><img src="https://img.shields.io/github/v/release/BrandeisPatrick/open-marketplace?label=release" alt="Latest release"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
-  <img src="https://img.shields.io/badge/node-%3E%3D22.13-339933?logo=node.js&logoColor=white" alt="Node.js 22.13 or newer">
-  <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-Streamable_HTTP-6b4fbb" alt="MCP: Streamable HTTP"></a>
-  <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome"></a>
+  <a href="https://github.com/BrandeisPatrick/open-marketplace/releases/latest"><img src="https://img.shields.io/github/v/release/BrandeisPatrick/open-marketplace?label=release&labelColor=27272a&color=52525b" alt="Latest release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-52525b?labelColor=27272a" alt="License: MIT"></a>
+  <img src="https://img.shields.io/badge/node-%3E%3D22.13-52525b?logo=node.js&logoColor=white&labelColor=27272a" alt="Node.js 22.13 or newer">
+  <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-Streamable_HTTP-52525b?labelColor=27272a" alt="MCP: Streamable HTTP"></a>
+  <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-52525b?labelColor=27272a" alt="PRs welcome"></a>
 </p>
 
 <p align="center">

@@ -44,7 +44,7 @@ export function Composer({ onSend, disabled, placeholder, suggestions = [] }: Pr
   };
 
   return (
-    <div className="border-t border-line bg-surface px-3 pt-2.5 pb-3">
+    <div className="border-t border-stone-900/[0.06] px-3 pt-2.5 pb-3 dark:border-white/[0.06]">
       {suggestions.length > 0 && (
         <div className="no-scrollbar -mx-3 mb-2 flex gap-1.5 overflow-x-auto px-3">
           {suggestions.map((s) => (
@@ -56,7 +56,7 @@ export function Composer({ onSend, disabled, placeholder, suggestions = [] }: Pr
                 setText(s);
                 submit(s);
               }}
-              className="shrink-0 rounded-full border border-line bg-sunken px-2.5 py-1 text-xs text-stone-600 transition hover:border-accent hover:text-accent-text disabled:cursor-not-allowed disabled:opacity-50 dark:text-stone-300"
+              className="glass-pill shrink-0 px-2.5 py-1 text-xs text-stone-600 transition hover:border-accent/40 hover:text-stone-900 disabled:cursor-not-allowed disabled:opacity-50 dark:text-stone-300 dark:hover:text-white"
             >
               {s}
             </button>
@@ -69,8 +69,8 @@ export function Composer({ onSend, disabled, placeholder, suggestions = [] }: Pr
           submit(text);
         }}
         className={clsx(
-          'flex items-end gap-2 rounded-2xl border border-line bg-sunken py-1.5 pr-1.5 pl-3.5 transition',
-          'focus-within:border-accent focus-within:bg-surface focus-within:ring-4 focus-within:ring-accent/15',
+          'glass flex items-end gap-2 rounded-2xl py-1.5 pr-1.5 pl-3.5 transition',
+          'focus-within:border-accent/50 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent/25',
           disabled && 'opacity-80',
         )}
       >
@@ -94,7 +94,7 @@ export function Composer({ onSend, disabled, placeholder, suggestions = [] }: Pr
           type="submit"
           disabled={disabled || !text.trim()}
           aria-label="Send message"
-          className="grid size-9 shrink-0 place-items-center rounded-xl bg-accent text-accent-fg shadow-sm transition hover:bg-accent-strong disabled:cursor-not-allowed disabled:opacity-35"
+          className="btn-ink grid size-9 shrink-0 place-items-center rounded-xl disabled:cursor-not-allowed disabled:opacity-35"
         >
           {disabled ? <LoaderCircle className="size-4 animate-spin" aria-hidden /> : <ArrowUp className="size-4" aria-hidden />}
         </button>

@@ -51,19 +51,19 @@ function useUnread(events: MarketplaceEvent[], visible: boolean): number {
 
 function OfflineBanner({ onDismiss }: { onDismiss: () => void }) {
   return (
-    <div className="mx-4 mb-3 flex shrink-0 items-start gap-2.5 rounded-xl border border-amber-300/70 bg-amber-50 px-3.5 py-2.5 text-[13px] leading-relaxed text-amber-900 md:mx-5 dark:border-amber-400/25 dark:bg-amber-500/10 dark:text-amber-100">
-      <TriangleAlert className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-300" aria-hidden />
+    <div className="glass-strong mx-4 mb-3 flex shrink-0 items-start gap-2.5 rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed text-stone-800 md:mx-5 dark:text-stone-100">
+      <TriangleAlert className="mt-0.5 size-4 shrink-0 text-stone-900 dark:text-stone-50" aria-hidden />
       <p className="min-w-0 flex-1">
         <span className="font-semibold">Offline mode.</span> Both assistants are running on simple keyword rules. Add{' '}
-        <code className="rounded bg-amber-100 px-1 font-mono text-[12px] dark:bg-amber-500/20">ANTHROPIC_API_KEY</code> to{' '}
-        <code className="rounded bg-amber-100 px-1 font-mono text-[12px] dark:bg-amber-500/20">.env</code> and restart the
+        <code className="rounded bg-stone-200/80 px-1 font-mono text-[12px] dark:bg-white/10">ANTHROPIC_API_KEY</code> to{' '}
+        <code className="rounded bg-stone-200/80 px-1 font-mono text-[12px] dark:bg-white/10">.env</code> and restart the
         server to chat with Claude.
       </p>
       <button
         type="button"
         onClick={onDismiss}
         aria-label="Dismiss"
-        className="grid size-6 shrink-0 place-items-center rounded-md text-amber-700 transition hover:bg-amber-100 dark:text-amber-200 dark:hover:bg-amber-500/20"
+        className="grid size-6 shrink-0 place-items-center rounded-md text-stone-500 transition hover:bg-stone-900/5 hover:text-stone-900 dark:text-stone-400 dark:hover:bg-white/10 dark:hover:text-stone-50"
       >
         <X className="size-4" />
       </button>
@@ -80,7 +80,7 @@ const TABS: { id: Tab; label: string; Icon: LucideIcon }[] = [
 function MobileTabs({ tab, onChange, unread }: { tab: Tab; onChange: (tab: Tab) => void; unread: number }) {
   return (
     <nav className="shrink-0 px-4 pb-3" aria-label="Views">
-      <div role="tablist" className="grid grid-cols-3 gap-1 rounded-xl bg-stone-200/70 p-1 dark:bg-stone-800/80">
+      <div role="tablist" className="glass grid grid-cols-3 gap-1 rounded-2xl p-1">
         {TABS.map(({ id, label, Icon }) => (
           <button
             key={id}
@@ -89,16 +89,16 @@ function MobileTabs({ tab, onChange, unread }: { tab: Tab; onChange: (tab: Tab) 
             aria-selected={tab === id}
             onClick={() => onChange(id)}
             className={clsx(
-              'flex items-center justify-center gap-1.5 rounded-lg py-1.5 text-sm font-medium transition',
+              'flex items-center justify-center gap-1.5 rounded-xl py-1.5 text-sm font-medium transition',
               tab === id
-                ? 'bg-surface text-stone-900 shadow-sm dark:text-stone-50'
+                ? 'ink-glass rounded-xl'
                 : 'text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-100',
             )}
           >
             <Icon className="size-4" aria-hidden />
             {label}
             {id === 'activity' && unread > 0 && (
-              <span className="grid h-[18px] min-w-[18px] place-items-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white tabular-nums">
+              <span className="grid h-[18px] min-w-[18px] place-items-center rounded-full bg-stone-900 px-1 text-[10px] font-bold text-white tabular-nums ring-1 ring-white/50 dark:bg-white dark:text-stone-950 dark:ring-black/40">
                 {unread > 99 ? '99+' : unread}
               </span>
             )}
@@ -144,8 +144,8 @@ export default function App() {
       <main className="flex min-h-0 flex-1 flex-col gap-4 px-4 pb-4 md:px-5 md:pb-5">
         <div className="grid min-h-0 flex-1 grid-cols-1 grid-rows-1 gap-4 md:grid-cols-2">
           {/* Both windows stay mounted on mobile so a reply keeps streaming while you look elsewhere. */}
-          <ChatWindow role="buyer" actor={actors.buyer} accent="indigo" hidden={!isMd && tab !== 'buyer'} />
-          <ChatWindow role="seller" actor={actors.seller} accent="amber" hidden={!isMd && tab !== 'seller'} />
+          <ChatWindow role="buyer" actor={actors.buyer} accent="ink" hidden={!isMd && tab !== 'buyer'} />
+          <ChatWindow role="seller" actor={actors.seller} accent="graphite" hidden={!isMd && tab !== 'seller'} />
           {!isMd && tab === 'activity' && <ActivityFeed events={events} connected={connected} variant="page" />}
         </div>
         {isMd && activityOpen && (

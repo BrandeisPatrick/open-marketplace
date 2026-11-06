@@ -14,17 +14,18 @@ export function Rating({ rating, count, className }: { rating: number; count: nu
       className={clsx('inline-flex items-center gap-1 text-xs text-stone-500 dark:text-stone-400', className)}
       aria-label={`Rated ${value.toFixed(1)} out of 5 from ${reviews} reviews`}
     >
-      <Star className="size-3.5 fill-amber-400 text-amber-400" aria-hidden />
+      <Star className="size-3.5 fill-stone-800 text-stone-800 dark:fill-stone-200 dark:text-stone-200" aria-hidden />
       <span className="font-medium text-stone-700 dark:text-stone-200">{value.toFixed(1)}</span>
       <span>({compact(reviews)})</span>
     </span>
   );
 }
 
+/** in stock = outlined glass, low = ink fill (needs attention), out = dashed and dimmed. */
 const STOCK_TONES = {
-  ok: 'bg-emerald-50 text-emerald-700 ring-emerald-600/15 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-400/20',
-  low: 'bg-amber-50 text-amber-800 ring-amber-600/25 dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-400/25',
-  out: 'bg-stone-100 text-stone-600 ring-stone-500/20 dark:bg-stone-800 dark:text-stone-300 dark:ring-stone-600/40',
+  ok: 'bg-white/75 text-stone-700 ring-1 ring-stone-300 ring-inset shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-sm dark:bg-white/5 dark:text-stone-200 dark:ring-stone-600 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]',
+  low: 'bg-stone-900 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] dark:bg-stone-50 dark:text-stone-950',
+  out: 'bg-white/40 text-stone-500 outline-1 -outline-offset-1 outline-dashed outline-stone-400 dark:bg-transparent dark:text-stone-400 dark:outline-stone-500',
 } as const;
 
 /** "In stock" / "Only 3 left" / "Out of stock" (`exact` shows "12 in stock" for sellers). */
@@ -35,7 +36,7 @@ export function StockBadge({ stock, exact, className }: { stock: number; exact?:
   return (
     <span
       className={clsx(
-        'inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium whitespace-nowrap ring-1 ring-inset',
+        'inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium whitespace-nowrap',
         STOCK_TONES[tone],
         className,
       )}
@@ -49,7 +50,7 @@ export function StockBadge({ stock, exact, className }: { stock: number; exact?:
 export function ListingStatus({ status }: { status: ProductSummary['status'] }) {
   if (status === 'active') return null;
   return (
-    <span className="inline-flex items-center rounded-full bg-stone-800/80 px-2 py-0.5 text-[11px] font-medium text-white capitalize dark:bg-stone-200/90 dark:text-stone-900">
+    <span className="inline-flex items-center rounded-full bg-stone-600 px-2 py-0.5 text-[11px] font-medium text-white capitalize shadow-[inset_0_1px_0_rgba(255,255,255,0.2)] dark:bg-stone-300 dark:text-stone-900">
       {status}
     </span>
   );
@@ -65,9 +66,9 @@ type TileProps = {
 function ProductTile({ product: p, onAdd, busy, exactStock }: TileProps) {
   const unavailable = p.stock <= 0 || p.status !== 'active';
   return (
-    <article className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-[0_1px_2px_rgb(28_25_23/0.04)] transition hover:-translate-y-px hover:shadow-md hover:shadow-stone-900/5 dark:hover:shadow-black/30">
-      <div className="relative grid aspect-[4/3] place-items-center bg-linear-to-br from-stone-100 to-stone-50 dark:from-stone-800 dark:to-stone-800/30">
-        <span className="text-[2.6rem] leading-none transition-transform duration-300 group-hover:scale-110" aria-hidden>
+    <article className="glass glass-sheen group flex min-w-0 flex-col rounded-2xl transition hover:-translate-y-px">
+      <div className="relative grid aspect-[4/3] place-items-center bg-linear-to-br from-white/80 to-stone-200/50 dark:from-white/10 dark:to-white/[0.02]">
+        <span className="emoji-mono text-[2.6rem] leading-none transition-transform duration-300 group-hover:scale-110" aria-hidden>
           {p.emoji || '📦'}
         </span>
         <div className="absolute inset-x-2 top-2 flex flex-wrap items-start justify-between gap-1">
@@ -91,7 +92,7 @@ function ProductTile({ product: p, onAdd, busy, exactStock }: TileProps) {
               onClick={() => onAdd(p)}
               disabled={busy || unavailable}
               aria-label={`Add ${p.title} to cart`}
-              className="inline-flex shrink-0 items-center gap-0.5 rounded-full bg-accent py-1 pr-2.5 pl-2 text-xs font-medium text-accent-fg shadow-sm transition hover:bg-accent-strong disabled:cursor-not-allowed disabled:opacity-40"
+              className="btn-ink inline-flex shrink-0 items-center gap-0.5 rounded-full py-1 pr-2.5 pl-2 text-xs font-medium disabled:cursor-not-allowed disabled:opacity-40"
             >
               <Plus className="size-3.5" aria-hidden />
               Add

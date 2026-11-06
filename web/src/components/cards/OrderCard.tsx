@@ -6,11 +6,13 @@ import type { Order, OrderStatus, Role } from '../../types';
 import { Card, EmojiTile, EmptyNote, MoreToggle } from './Card';
 
 const STATUS_STYLE: Record<OrderStatus, string> = {
-  placed: 'bg-blue-50 text-blue-700 ring-blue-600/20 dark:bg-blue-500/10 dark:text-blue-300 dark:ring-blue-400/25',
-  shipped: 'bg-amber-50 text-amber-800 ring-amber-600/25 dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-400/25',
+  placed:
+    'bg-white/70 text-stone-700 ring-1 ring-stone-300 ring-inset shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] dark:bg-white/5 dark:text-stone-200 dark:ring-stone-600 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]',
+  shipped:
+    'bg-stone-200 text-stone-800 ring-1 ring-stone-300/80 ring-inset shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] dark:bg-stone-600 dark:text-stone-50 dark:ring-stone-500 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]',
   delivered:
-    'bg-emerald-50 text-emerald-700 ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-400/25',
-  cancelled: 'bg-stone-100 text-stone-600 ring-stone-500/20 dark:bg-stone-800 dark:text-stone-400 dark:ring-stone-600/40',
+    'bg-stone-900 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] dark:bg-stone-50 dark:text-stone-950 dark:shadow-[inset_0_-1px_0_rgba(0,0,0,0.15)]',
+  cancelled: 'bg-transparent text-stone-400 outline-1 -outline-offset-1 outline-dashed outline-stone-300 dark:text-stone-500 dark:outline-stone-600',
 };
 
 const STATUS_ICON: Record<OrderStatus, ComponentType<{ className?: string }>> = {
@@ -22,13 +24,13 @@ const STATUS_ICON: Record<OrderStatus, ComponentType<{ className?: string }>> = 
 
 export const ORDER_STATUSES: OrderStatus[] = ['placed', 'shipped', 'delivered', 'cancelled'];
 
-/** placed = blue, shipped = amber, delivered = green, cancelled = gray. */
+/** placed = outlined, shipped = mid-gray fill, delivered = ink fill, cancelled = dashed and dimmed. */
 export function StatusPill({ status, count }: { status: OrderStatus; count?: number }) {
   const Icon = STATUS_ICON[status] ?? Clock;
   return (
     <span
       className={clsx(
-        'inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium whitespace-nowrap capitalize ring-1 ring-inset',
+        'inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium whitespace-nowrap capitalize',
         STATUS_STYLE[status] ?? STATUS_STYLE.cancelled,
       )}
     >
@@ -51,7 +53,7 @@ export function OrderCard({ order, perspective, onShip, busy }: CardProps) {
   const CounterpartyIcon = perspective === 'seller' ? UserRound : Store;
   return (
     <Card className="overflow-hidden">
-      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 border-b border-line px-4 py-2.5">
+      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 border-b border-stone-900/[0.06] px-4 py-2.5 dark:border-white/[0.06]">
         <span className="font-mono text-[13px] font-semibold text-stone-800 dark:text-stone-100">{shortId(order.id)}</span>
         <StatusPill status={order.status} />
         <span className="ml-auto text-xs text-stone-500 dark:text-stone-400" title={fullDate(order.created_at)}>
@@ -69,7 +71,7 @@ export function OrderCard({ order, perspective, onShip, busy }: CardProps) {
           </li>
         ))}
       </ul>
-      <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-2 border-t border-line bg-sunken px-4 py-2.5 text-xs">
+      <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-2 border-t border-stone-900/[0.06] bg-sunken/50 px-4 py-2.5 text-xs dark:border-white/[0.06] dark:bg-black/10">
         <div className="min-w-0 space-y-1 text-stone-500 dark:text-stone-400">
           <div className="flex items-center gap-1.5">
             <CounterpartyIcon className="size-3.5 shrink-0" aria-hidden />
@@ -90,12 +92,12 @@ export function OrderCard({ order, perspective, onShip, busy }: CardProps) {
         </div>
       </div>
       {onShip && order.status === 'placed' && (
-        <div className="flex justify-end border-t border-line px-4 py-2">
+        <div className="flex justify-end border-t border-stone-900/[0.06] px-4 py-2 dark:border-white/[0.06]">
           <button
             type="button"
             onClick={() => onShip(order)}
             disabled={busy}
-            className="inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-fg shadow-sm transition hover:bg-accent-strong disabled:cursor-not-allowed disabled:opacity-40"
+            className="btn-ink inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium disabled:cursor-not-allowed disabled:opacity-40"
           >
             <Truck className="size-3.5" aria-hidden />
             Mark shipped

@@ -10,7 +10,7 @@ import { BuyerPanel } from './panels/BuyerPanel';
 import { SellerPanel } from './panels/SellerPanel';
 import { Transcript } from './Transcript';
 
-export type Accent = 'indigo' | 'amber';
+export type Accent = 'ink' | 'graphite';
 
 type Persona = {
   roleLabel: string;
@@ -83,7 +83,7 @@ function EmptyState({
           <ErrorChip message={error} />
         </div>
       )}
-      <div className="grid size-12 place-items-center rounded-2xl bg-accent-soft text-accent-text">
+      <div className="ink-glass grid size-12 place-items-center rounded-2xl">
         <Sparkles className="size-6" aria-hidden />
       </div>
       <h3 className="mt-3 text-base font-semibold text-balance text-stone-900 dark:text-stone-50">{title}</h3>
@@ -95,7 +95,7 @@ function EmptyState({
             type="button"
             disabled={disabled}
             onClick={() => onPick(s)}
-            className="rounded-xl border border-line bg-surface px-3 py-2.5 text-left text-sm text-stone-700 shadow-sm transition hover:-translate-y-px hover:border-accent hover:text-stone-900 hover:shadow-md disabled:opacity-50 dark:text-stone-200 dark:hover:text-white"
+            className="glass rounded-xl px-3 py-2.5 text-left text-sm text-stone-700 transition hover:-translate-y-px hover:border-accent/40 hover:text-stone-900 disabled:opacity-50 dark:text-stone-200 dark:hover:text-white"
           >
             {s}
           </button>
@@ -146,24 +146,24 @@ export function ChatWindow({ role, actor, accent, hidden = false }: Props) {
       data-accent={accent}
       aria-label={`${persona.roleLabel} window — ${actor.name}`}
       className={clsx(
-        'relative min-h-0 min-w-0 flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-[0_1px_3px_rgb(28_25_23/0.05),0_12px_32px_-18px_rgb(28_25_23/0.18)] dark:shadow-none',
+        'glass-strong glass-sheen min-h-0 min-w-0 flex-col rounded-3xl',
         hidden ? 'hidden' : 'flex',
       )}
     >
-      <div className="h-[3px] shrink-0 bg-accent" aria-hidden />
-      <header className="flex shrink-0 items-center gap-3 border-b border-line px-4 py-3">
+      <div className="h-px shrink-0 bg-linear-to-r from-transparent via-accent/50 to-transparent" aria-hidden />
+      <header className="flex shrink-0 items-center gap-3 border-b border-stone-900/[0.06] px-4 py-3 dark:border-white/[0.06]">
         <div className="relative shrink-0">
-          <div className="grid size-10 place-items-center rounded-full bg-accent text-[15px] font-semibold text-accent-fg shadow-sm">
+          <div className="ink-glass grid size-10 place-items-center rounded-full text-[15px] font-semibold">
             {(actor.name || '?').trim().charAt(0).toUpperCase()}
           </div>
-          <span className="absolute -right-1 -bottom-1 grid size-5 place-items-center rounded-full bg-surface ring-2 ring-surface">
+          <span className="glass-pill absolute -right-1 -bottom-1 grid size-5 place-items-center">
             <persona.Icon className="size-3 text-accent-text" aria-hidden />
           </span>
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex min-w-0 items-center gap-2">
             <h2 className="truncate text-[15px] leading-tight font-semibold text-stone-900 dark:text-stone-50">{actor.name}</h2>
-            <span className="shrink-0 rounded-full bg-accent-soft px-2 py-0.5 text-[11px] font-semibold text-accent-text">
+            <span className="glass-pill shrink-0 px-2 py-px text-[11px] font-semibold text-accent-text">
               {persona.roleLabel}
             </span>
           </div>
@@ -182,8 +182,8 @@ export function ChatWindow({ role, actor, accent, hidden = false }: Props) {
             className={clsx(
               'inline-flex h-8 items-center gap-1.5 rounded-lg px-2 text-xs font-medium transition',
               panelOpen
-                ? 'bg-accent-soft text-accent-text'
-                : 'text-stone-500 hover:bg-stone-100 hover:text-stone-800 dark:text-stone-400 dark:hover:bg-stone-800 dark:hover:text-stone-100',
+                ? 'glass-pill rounded-lg text-accent-text'
+                : 'text-stone-500 hover:bg-stone-900/5 hover:text-stone-800 dark:text-stone-400 dark:hover:bg-white/10 dark:hover:text-stone-100',
             )}
           >
             <PanelToggleIcon className="size-4" aria-hidden />
@@ -195,7 +195,7 @@ export function ChatWindow({ role, actor, accent, hidden = false }: Props) {
             disabled={items.length === 0 && !streaming}
             aria-label="Start a new conversation"
             title="New conversation (clears history)"
-            className="grid size-8 place-items-center rounded-lg text-stone-500 transition hover:bg-stone-100 hover:text-stone-800 disabled:cursor-not-allowed disabled:opacity-35 dark:text-stone-400 dark:hover:bg-stone-800 dark:hover:text-stone-100"
+            className="grid size-8 place-items-center rounded-lg text-stone-500 transition hover:bg-stone-900/5 hover:text-stone-800 disabled:cursor-not-allowed disabled:opacity-35 dark:text-stone-400 dark:hover:bg-white/10 dark:hover:text-stone-100"
           >
             <RotateCcw className="size-4" aria-hidden />
           </button>
@@ -203,7 +203,7 @@ export function ChatWindow({ role, actor, accent, hidden = false }: Props) {
       </header>
 
       <div className="relative flex min-h-0 flex-1">
-        <div className="flex min-w-0 flex-1 flex-col bg-sunken">
+        <div className="flex min-w-0 flex-1 flex-col dark:bg-sunken/30">
           <Transcript
             role={role}
             items={items}
@@ -228,10 +228,10 @@ export function ChatWindow({ role, actor, accent, hidden = false }: Props) {
           id={panelId}
           aria-label={`${persona.panelLabel} panel`}
           className={clsx(
-            'overflow-y-auto overscroll-contain bg-surface scroll-thin',
+            'overflow-y-auto overscroll-contain scroll-thin',
             !panelOpen && 'hidden',
-            panelOpen && isWide && 'w-56 shrink-0 border-l border-line xl:w-64 2xl:w-72',
-            overlay && 'absolute inset-y-0 right-0 z-20 w-[min(20rem,88%)] animate-slide-in border-l border-line shadow-2xl',
+            panelOpen && isWide && 'w-56 shrink-0 border-l border-stone-900/[0.06] bg-white/20 xl:w-64 2xl:w-72 dark:border-white/[0.06] dark:bg-surface/40',
+            overlay && 'glass-strong absolute inset-y-0 right-0 z-20 w-[min(20rem,88%)] animate-slide-in rounded-l-2xl border-r-0',
           )}
         >
           {role === 'buyer' ? <BuyerPanel {...panelProps} /> : <SellerPanel {...panelProps} />}

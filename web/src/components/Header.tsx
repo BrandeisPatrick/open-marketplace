@@ -42,18 +42,19 @@ function useCopy(): [string | null, (text: string, key: string) => void] {
   return [copied, copy];
 }
 
+/** Monotone status tones: on = glass pill + ink dot, offline = mid-gray fill, error = ink fill, pending = dim. */
 const PILL_TONES = {
-  green: 'bg-emerald-50 text-emerald-800 ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-200 dark:ring-emerald-400/25',
-  amber: 'bg-amber-50 text-amber-900 ring-amber-600/25 dark:bg-amber-500/10 dark:text-amber-200 dark:ring-amber-400/25',
-  red: 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-500/10 dark:text-red-300 dark:ring-red-400/25',
-  gray: 'bg-surface text-stone-500 ring-line dark:text-stone-400',
+  on: 'glass-pill text-stone-800 dark:text-stone-100',
+  offline: 'bg-stone-200 text-stone-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] ring-1 ring-inset ring-stone-300 dark:bg-stone-700 dark:text-stone-100 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] dark:ring-stone-600',
+  error: 'bg-stone-900 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.2)] dark:bg-stone-50 dark:text-stone-950',
+  pending: 'glass-pill text-stone-500 dark:text-stone-400',
 } as const;
 
 const DOT_TONES = {
-  green: 'bg-emerald-500',
-  amber: 'bg-amber-500',
-  red: 'bg-red-500',
-  gray: 'bg-stone-400 animate-pulse',
+  on: 'bg-stone-900 shadow-[0_0_0_3px_rgba(24,24,27,0.12)] dark:bg-stone-50 dark:shadow-[0_0_0_3px_rgba(250,250,250,0.15)]',
+  offline: 'bg-transparent ring-[1.5px] ring-stone-600 ring-inset dark:ring-stone-300',
+  error: 'bg-white dark:bg-stone-950',
+  pending: 'bg-stone-400 animate-pulse',
 } as const;
 
 function AiPill({ health, error }: { health: Health | null; error: string | null }) {
@@ -62,27 +63,27 @@ function AiPill({ health, error }: { health: Health | null; error: string | null
   let short: string;
   let title: string | undefined;
   if (!health && error) {
-    tone = 'red';
+    tone = 'error';
     label = 'Server unreachable';
     short = 'No server';
     title = error;
   } else if (!health) {
-    tone = 'gray';
+    tone = 'pending';
     label = 'Connecting…';
     short = '…';
   } else if (health.ai.enabled) {
-    tone = 'green';
+    tone = 'on';
     label = `Claude · ${health.ai.model} · ${health.ai.effort}`;
     short = 'Claude';
   } else {
-    tone = 'amber';
+    tone = 'offline';
     label = 'Offline mode — add ANTHROPIC_API_KEY to .env';
     short = 'Offline mode';
   }
   return (
     <span
       title={title ?? label}
-      className={clsx('inline-flex h-8 min-w-0 items-center gap-1.5 rounded-full px-3 text-xs font-medium ring-1 ring-inset', PILL_TONES[tone])}
+      className={clsx('inline-flex h-8 min-w-0 items-center gap-1.5 rounded-full px-3 text-xs font-medium', PILL_TONES[tone])}
     >
       <span className={clsx('size-2 shrink-0 rounded-full', DOT_TONES[tone])} aria-hidden />
       <span className="hidden truncate lg:inline">{label}</span>
@@ -95,7 +96,7 @@ function CommandBlock({ label, command, copied, onCopy }: { label: string; comma
   return (
     <div className="mt-3">
       <div className="mb-1 text-xs font-medium text-stone-600 dark:text-stone-300">{label}</div>
-      <div className="flex items-start gap-2 rounded-xl bg-stone-900 py-2 pr-2 pl-3 dark:bg-black/40">
+      <div className="flex items-start gap-2 rounded-xl bg-stone-900 py-2 pr-2 pl-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] dark:bg-black/50">
         <code className="min-w-0 flex-1 font-mono text-[11.5px] leading-relaxed break-all whitespace-pre-wrap text-stone-100">
           {command}
         </code>
@@ -105,7 +106,7 @@ function CommandBlock({ label, command, copied, onCopy }: { label: string; comma
           aria-label={`Copy command: ${label}`}
           className="grid size-7 shrink-0 place-items-center rounded-lg text-stone-400 transition hover:bg-white/10 hover:text-white"
         >
-          {copied ? <Check className="size-3.5 text-emerald-400" /> : <Copy className="size-3.5" />}
+          {copied ? <Check className="size-3.5 text-white" /> : <Copy className="size-3.5" />}
         </button>
       </div>
     </div>
@@ -142,7 +143,7 @@ function McpPill({ health }: { health: Health | null }) {
 
   return (
     <div ref={ref} className="relative">
-      <div className="inline-flex h-8 items-center rounded-full bg-surface shadow-sm ring-1 ring-line ring-inset">
+      <div className="glass-pill inline-flex h-8 items-center">
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
@@ -160,9 +161,9 @@ function McpPill({ health }: { health: Health | null }) {
           onClick={() => copy(url, 'url')}
           aria-label="Copy MCP endpoint URL"
           title="Copy endpoint URL"
-          className="hidden h-full place-items-center rounded-r-full border-l border-line pr-2.5 pl-2 text-stone-400 transition hover:text-stone-700 sm:grid dark:hover:text-stone-200"
+          className="hidden h-full place-items-center rounded-r-full border-l border-stone-900/10 pr-2.5 pl-2 dark:border-white/10 text-stone-400 transition hover:text-stone-700 sm:grid dark:hover:text-stone-200"
         >
-          {copied === 'url' ? <Check className="size-3.5 text-emerald-600" /> : <Copy className="size-3.5" />}
+          {copied === 'url' ? <Check className="size-3.5 text-stone-900 dark:text-white" /> : <Copy className="size-3.5" />}
         </button>
       </div>
 
@@ -170,7 +171,7 @@ function McpPill({ health }: { health: Health | null }) {
         <div
           role="dialog"
           aria-label="Connect an external agent"
-          className="fixed inset-x-4 top-16 z-50 animate-rise rounded-2xl border border-line bg-surface p-4 shadow-xl sm:absolute sm:inset-x-auto sm:top-full sm:right-0 sm:mt-2 sm:w-[30rem]"
+          className="glass-strong fixed inset-x-4 top-16 z-50 animate-rise rounded-2xl p-4 sm:absolute sm:inset-x-auto sm:top-full sm:right-0 sm:mt-2 sm:w-[30rem]"
         >
           <h3 className="flex items-center gap-2 text-sm font-semibold text-stone-900 dark:text-stone-50">
             <Bot className="size-4 text-mcp" aria-hidden />
@@ -213,7 +214,7 @@ export function Header({ health, healthError, activityOpen, onToggleActivity, un
   return (
     <header className="flex shrink-0 items-center gap-2 px-4 py-3 sm:gap-3 md:px-5">
       <div className="flex min-w-0 items-center gap-2.5">
-        <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-linear-to-br from-buyer via-mcp to-seller text-white shadow-sm">
+        <span className="logo-mark grid size-9 shrink-0 place-items-center rounded-[11px] text-white">
           <ShoppingBag className="size-[18px]" aria-hidden />
         </span>
         <div className="min-w-0">
@@ -230,16 +231,16 @@ export function Header({ health, healthError, activityOpen, onToggleActivity, un
           aria-pressed={activityOpen}
           title={activityOpen ? 'Hide activity' : 'Show activity'}
           className={clsx(
-            'relative hidden h-8 shrink-0 items-center gap-1.5 rounded-full px-3 text-xs font-medium ring-1 ring-inset transition md:inline-flex',
+            'relative hidden h-8 shrink-0 items-center gap-1.5 rounded-full px-3 text-xs font-medium transition md:inline-flex',
             activityOpen
-              ? 'bg-stone-900 text-white ring-stone-900 dark:bg-stone-100 dark:text-stone-900 dark:ring-stone-100'
-              : 'bg-surface text-stone-600 shadow-sm ring-line hover:text-stone-900 dark:text-stone-300 dark:hover:text-white',
+              ? 'ink-glass'
+              : 'glass-pill text-stone-600 hover:text-stone-900 dark:text-stone-300 dark:hover:text-white',
           )}
         >
           <Activity className="size-3.5" aria-hidden />
           Activity
           {unread > 0 && (
-            <span className="grid h-[18px] min-w-[18px] place-items-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white tabular-nums">
+            <span className="grid h-[18px] min-w-[18px] place-items-center rounded-full bg-stone-900 px-1 text-[10px] font-bold text-white tabular-nums ring-1 ring-white/50 dark:bg-white dark:text-stone-950 dark:ring-black/40">
               {unread > 99 ? '99+' : unread}
             </span>
           )}

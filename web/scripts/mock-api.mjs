@@ -27,7 +27,7 @@ const s = (n) => (n === 1 ? '' : 's');
 // ── Catalogue: [id, seller, title, cents, stock, category, emoji, rating, reviews, tags, description]
 const products = [
   ['prod_k3lp7x2a', SELLER, 'Keychron K3 Low-Profile Mechanical Keyboard', 8999, 14, 'electronics', '⌨️', 4.6, 1284, ['keyboard', 'mechanical', 'wireless'], 'Slim wireless mechanical keyboard with hot-swappable low-profile switches.'],
-  ['prod_tk65brwn', SELLER, 'Tactile 65% Mechanical Keyboard, Brown Switches', 6400, 3, 'electronics', '🎹', 4.4, 512, ['keyboard', 'mechanical', 'tactile'], 'Compact 65% board with tactile brown switches, PBT keycaps and USB-C.'],
+  ['prod_tk65brwn', SELLER, 'Tactile 65% Mechanical Keyboard, Brown Switches', 6400, 3, 'electronics', '⌨️', 4.4, 512, ['keyboard', 'mechanical', 'tactile'], 'Compact 65% board with tactile brown switches, PBT keycaps and USB-C.'],
   ['prod_aerogo01', SELLER, 'AeroPress Go Travel Coffee Maker', 3995, 22, 'kitchen', '☕', 4.8, 3410, ['coffee', 'travel', 'gift'], 'Brews smooth, grit-free coffee in a minute and packs into its own mug.'],
   ['prod_ethbean2', SELLER, 'Single-Origin Ethiopia Coffee Beans, 12 oz', 1850, 40, 'kitchen', '🫘', 4.7, 860, ['coffee', 'beans', 'gift'], 'Light roast with notes of blueberry and jasmine, roasted weekly.'],
   ['prod_pourset2', SELLER, 'Stoneware Pour-Over Mug Set (2)', 2700, 5, 'kitchen', '🍵', 4.5, 214, ['coffee', 'mug', 'ceramic'], 'Two speckled stoneware mugs with a matching pour-over dripper.'],

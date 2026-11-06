@@ -6,7 +6,7 @@ export function Card({ className, children }: { className?: string; children: Re
   return (
     <div
       className={clsx(
-        'rounded-2xl border border-line bg-surface shadow-[0_1px_2px_rgb(28_25_23/0.04),0_6px_20px_-12px_rgb(28_25_23/0.12)] dark:shadow-none',
+        'glass glass-sheen rounded-2xl',
         className,
       )}
     >
@@ -17,7 +17,7 @@ export function Card({ className, children }: { className?: string; children: Re
 
 export function CardHeader({ icon, title, meta }: { icon?: ReactNode; title: ReactNode; meta?: ReactNode }) {
   return (
-    <div className="flex items-center gap-2 border-b border-line px-4 py-2.5">
+    <div className="flex items-center gap-2 border-b border-stone-900/[0.06] px-4 py-2.5 dark:border-white/[0.06]">
       {icon && <span className="text-stone-400 dark:text-stone-500 [&>svg]:size-4">{icon}</span>}
       <h4 className="text-sm font-semibold text-stone-800 dark:text-stone-100">{title}</h4>
       {meta && <span className="ml-auto text-xs text-stone-500 dark:text-stone-400">{meta}</span>}
@@ -35,7 +35,7 @@ export function EmojiTile({ emoji, size = 'md' }: { emoji?: string; size?: keyof
   return (
     <span
       aria-hidden
-      className={clsx('grid shrink-0 place-items-center bg-stone-100 leading-none dark:bg-stone-800', TILE_SIZES[size])}
+      className={clsx('glass-tile emoji-mono grid shrink-0 place-items-center leading-none', TILE_SIZES[size])}
     >
       {emoji || '📦'}
     </span>
@@ -44,7 +44,7 @@ export function EmojiTile({ emoji, size = 'md' }: { emoji?: string; size?: keyof
 
 export function EmptyNote({ children }: { children: ReactNode }) {
   return (
-    <div className="rounded-2xl border border-dashed border-line px-4 py-3 text-sm text-stone-500 dark:text-stone-400">
+    <div className="rounded-2xl border border-dashed border-stone-300 bg-surface/40 px-4 py-3 dark:border-stone-700 text-sm text-stone-500 dark:text-stone-400">
       {children}
     </div>
   );

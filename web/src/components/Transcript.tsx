@@ -147,7 +147,7 @@ const ResultBlock = memo(function ResultBlock({ item, role, send, busy, orphan }
 const UserBubble = memo(function UserBubble({ text }: { text: string }) {
   return (
     <div className="flex animate-rise justify-end pl-8">
-      <div className="max-w-[85%] rounded-2xl rounded-br-md bg-accent px-3.5 py-2 text-[15px] leading-relaxed break-words whitespace-pre-wrap text-accent-fg shadow-sm">
+      <div className="ink-glass max-w-[85%] rounded-2xl rounded-br-md px-3.5 py-2 text-[15px] leading-relaxed break-words whitespace-pre-wrap">
         {text}
       </div>
     </div>
@@ -166,7 +166,7 @@ function Thinking({ status }: { status: string | null }) {
   const label = status ? capitalize(status.trim()).replace(/[.…]*$/, '…') : null;
   return (
     <div className="flex animate-rise items-center gap-2" role="status" aria-label={label ?? 'Assistant is thinking'}>
-      <span className="inline-flex items-center gap-1 rounded-full bg-surface px-3 py-2 shadow-sm ring-1 ring-line">
+      <span className="glass-pill inline-flex items-center gap-1 px-3 py-2">
         {[0, 1, 2].map((i) => (
           <span key={i} className="size-1.5 animate-typing rounded-full bg-accent" style={{ animationDelay: `${i * 0.16}s` }} />
         ))}
@@ -303,7 +303,7 @@ export function Transcript({ role, items, streaming, status, loaded, onSend, emp
             setShowJump(false);
             scrollToBottom();
           }}
-          className="absolute bottom-3 left-1/2 inline-flex -translate-x-1/2 animate-rise items-center gap-1 rounded-full border border-line bg-surface/95 px-3 py-1 text-xs font-medium text-stone-600 shadow-md backdrop-blur dark:text-stone-300"
+          className="glass-pill absolute bottom-3 left-1/2 inline-flex -translate-x-1/2 animate-rise items-center gap-1 px-3 py-1 text-xs font-medium text-stone-600 dark:text-stone-300"
         >
           <ArrowDown className="size-3.5" aria-hidden />
           Latest
