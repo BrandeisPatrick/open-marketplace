@@ -1,6 +1,8 @@
 {
-  "name": "@ai-marketplace/server",
+  "name": "@open-marketplace/server",
   "version": "0.1.0",
+  "description": "Open Marketplace server: REST API, Claude chat assistants and MCP server over one shared tool registry.",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {

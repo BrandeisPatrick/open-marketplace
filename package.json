@@ -1,9 +1,29 @@
 {
-  "name": "ai-marketplace",
+  "name": "open-marketplace",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "AI-first marketplace: chat is the primary interface for buyers and sellers, and every marketplace action is also exposed to external agents over MCP.",
+  "description": "Open Marketplace: an AI-first marketplace where chat is the primary interface for buyers and sellers, and every marketplace action is also exposed to external agents over MCP.",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "claude",
+    "anthropic",
+    "ai-agents",
+    "marketplace",
+    "ecommerce",
+    "chat"
+  ],
+  "homepage": "https://github.com/BrandeisPatrick/open-marketplace#readme",
+  "bugs": {
+    "url": "https://github.com/BrandeisPatrick/open-marketplace/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrandeisPatrick/open-marketplace.git"
+  },
+  "license": "MIT",
+  "author": "BrandeisPatrick (https://github.com/BrandeisPatrick)",
   "workspaces": [
     "server",
     "web"

@@ -29,7 +29,7 @@ describe('MCP server (Streamable HTTP, stateless)', () => {
 
   it('buyer token: buyer tools, tool calls, resources and prompts', async () => {
     const client = await connect({ Authorization: 'Bearer mk_buyer_demo' });
-    expect(client.getServerVersion()).toMatchObject({ name: 'ai-marketplace' });
+    expect(client.getServerVersion()).toMatchObject({ name: 'open-marketplace' });
     expect(client.getInstructions()).toMatch(/Ada \(buyer\)/);
 
     const names = (await client.listTools()).tools.map((t) => t.name);

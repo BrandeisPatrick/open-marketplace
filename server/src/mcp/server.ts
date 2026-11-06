@@ -13,7 +13,7 @@ const RESOURCE_NOT_FOUND = -32002;
 function instructionsFor(actor: Actor): string {
   if (actor.role === 'buyer') {
     return (
-      `AI Marketplace, an Amazon-style marketplace. You are acting for ${actor.name} (buyer). ` +
+      `Open Marketplace, an Amazon-style marketplace. You are acting for ${actor.name} (buyer). ` +
       'Find products with search_products (price filters are US dollars; results carry cents plus formatted prices), ' +
       'inspect them with get_product, manage the cart with add_to_cart / remove_from_cart / view_cart, and track ' +
       'orders with list_orders / get_order. Only call checkout or cancel_order when the user explicitly asks for it ' +
@@ -22,7 +22,7 @@ function instructionsFor(actor: Actor): string {
     );
   }
   return (
-    `AI Marketplace, an Amazon-style marketplace. You are acting for ${actor.name} (seller). ` +
+    `Open Marketplace, an Amazon-style marketplace. You are acting for ${actor.name} (seller). ` +
     'Manage listings with list_my_listings / create_listing / update_listing (prices in US dollars; stock is the ' +
     'absolute number of units), fulfil orders with get_seller_orders and update_order_status (placed → shipped → ' +
     'delivered), and check performance with seller_stats. Confirm with the user before publishing a listing or ' +
@@ -37,7 +37,7 @@ function json(uri: string, value: unknown): ReadResourceResult {
 /** A fresh server per request (stateless transport); the actor's scope decides which tools exist. */
 export function createMcpServer(actor: Actor): McpServer {
   const server = new McpServer(
-    { name: 'ai-marketplace', title: 'AI Marketplace', version: SERVER_VERSION },
+    { name: 'open-marketplace', title: 'Open Marketplace', version: SERVER_VERSION },
     { instructions: instructionsFor(actor) },
   );
 
@@ -150,14 +150,14 @@ export function createMcpServer(actor: Actor): McpServer {
         },
       },
       ({ need }) => ({
-        description: 'Shop the AI Marketplace for a specific need',
+        description: 'Shop the Open Marketplace for a specific need',
         messages: [
           {
             role: 'user',
             content: {
               type: 'text',
               text:
-                `Help me shop on AI Marketplace. What I need: ${need}\n\n` +
+                `Help me shop on Open Marketplace. What I need: ${need}\n\n` +
                 'Use search_products (try a couple of keyword variations and use max_price / category / sort filters ' +
                 'for constraints), look closer at promising items with get_product, then recommend the best 2-3 ' +
                 'options with a one-line reason each (price, rating, stock, seller). Ask me before adding anything to ' +
@@ -182,7 +182,7 @@ export function createMcpServer(actor: Actor): McpServer {
             content: {
               type: 'text',
               text:
-                `Give me a short briefing on my store (${actor.name}) on AI Marketplace. Call seller_stats, and ` +
+                `Give me a short briefing on my store (${actor.name}) on Open Marketplace. Call seller_stats, and ` +
                 'get_seller_orders with status "placed". Summarize revenue and orders, list the orders waiting to ship ' +
                 '(oldest first), flag listings with 5 or fewer units and suggest restock amounts, and name the best ' +
                 'sellers. End with a prioritized to-do list of at most 5 items. Do not change anything without asking me.',

@@ -35,7 +35,7 @@ export function createApp(): express.Express {
   } else {
     app.get('/', (_req, res) => {
       res.json({
-        name: 'ai-marketplace',
+        name: 'open-marketplace',
         ui: config.webOrigin,
         health: '/api/health',
         mcp: '/mcp',
@@ -80,7 +80,7 @@ export function startServer(port: number = config.port) {
     const address = server.address();
     const actualPort = typeof address === 'object' && address ? address.port : port;
     const base = `http://localhost:${actualPort}`;
-    console.log(`\nAI Marketplace server  ${base}`);
+    console.log(`\nOpen Marketplace server  ${base}`);
     console.log(
       aiEnabled()
         ? `  AI assistants  on (${config.model}, effort ${config.effort}${config.fallbacks ? ', server-side fallbacks' : ''})`

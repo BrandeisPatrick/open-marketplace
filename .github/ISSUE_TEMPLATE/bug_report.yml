@@ -1,0 +1,73 @@
+name: Bug report
+description: Something does not work as documented.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Please do not include API keys or the contents of your `.env` file. Security problems belong in a [private advisory](https://github.com/BrandeisPatrick/open-marketplace/security/advisories/new), not here.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: A clear description of the problem, including any error messages or server log lines.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The smallest sequence of steps, chat messages, requests or MCP calls that shows the problem.
+      placeholder: |
+        1. Run `npm run dev`
+        2. In the Buyer window, send "..."
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What you expected to happen instead.
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Surface
+      description: Where did you see the problem? Select all that apply.
+      multiple: true
+      options:
+        - Web UI
+        - REST API
+        - MCP
+        - Chat assistant (Claude)
+        - Offline mode (no API key)
+        - Build, tests or tooling
+    validations:
+      required: true
+  - type: input
+    id: node-version
+    attributes:
+      label: Node.js version
+      description: Output of `node --version`.
+      placeholder: v24.0.0
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: macOS 26, Ubuntu 24.04, Windows 11
+    validations:
+      required: true
+  - type: input
+    id: mcp-client
+    attributes:
+      label: MCP client (if relevant)
+      description: For example Claude Code, Claude Desktop with mcp-remote, MCP Inspector or curl, and its version.
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Model and effort settings, screenshots, or anything else that helps.

@@ -1,4 +1,4 @@
-# AI Marketplace — shared contract (server ⇄ web ⇄ MCP)
+# Open Marketplace — shared contract (server ⇄ web ⇄ MCP)
 
 This file is the single source of truth for the shapes the `server/` and `web/`
 packages exchange. Both packages are built against it in parallel; do not
@@ -196,7 +196,7 @@ explains that the AI assistant is off and how to enable it.
 
 ## 8. MCP server (`POST /mcp`, Streamable HTTP, stateless)
 
-- `@modelcontextprotocol/sdk` `McpServer` named `ai-marketplace`; a fresh
+- `@modelcontextprotocol/sdk` `McpServer` named `open-marketplace`; a fresh
   server+transport per request (`sessionIdGenerator: undefined`); `GET`/`DELETE /mcp`
   return the JSON-RPC "Method not allowed" shape.
 - Identity: `Authorization: Bearer <token>` or `X-Marketplace-Token: <token>`

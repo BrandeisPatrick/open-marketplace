@@ -1,6 +1,8 @@
 {
-  "name": "@ai-marketplace/web",
+  "name": "@open-marketplace/web",
   "version": "0.1.0",
+  "description": "Open Marketplace web UI: buyer and seller chat windows side by side, built with Vite, React and Tailwind.",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {

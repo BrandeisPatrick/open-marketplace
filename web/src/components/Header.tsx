@@ -217,7 +217,7 @@ export function Header({ health, healthError, activityOpen, onToggleActivity, un
           <ShoppingBag className="size-[18px]" aria-hidden />
         </span>
         <div className="min-w-0">
-          <h1 className="truncate text-[15px] leading-tight font-semibold text-stone-900 dark:text-stone-50">AI Marketplace</h1>
+          <h1 className="truncate text-[15px] leading-tight font-semibold text-stone-900 dark:text-stone-50">Open Marketplace</h1>
           <p className="truncate text-xs text-stone-500 dark:text-stone-400">chat-first · agent-ready</p>
         </div>
       </div>
